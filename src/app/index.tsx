@@ -67,6 +67,11 @@ export default function Index() {
           <Text style={styles.favoritesButtonText}>My favorites</Text>
         </Pressable>
       </Link>
+      <Link href='/compare' asChild>
+        <Pressable style={styles.favoritesButton}>
+          <Text style={styles.favoritesButtonText}>Compare two Pokémon</Text>
+        </Pressable>
+      </Link>
       {showEmptyState ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Pokémon found</Text>
