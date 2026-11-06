@@ -16,6 +16,7 @@ A Pokédex app on live data from PokeAPI. Specs are in `specs/`.
 
 - **API Client**: `src/services/api.ts` - Fetch wrapper for PokeAPI (https://pokeapi.co/api/v2)
 - **Query Client**: `src/services/queryClient.ts` - TanStack Query client with 5min stale time
+- **Database**: `src/services/favorites.ts` - SQLite database (`pokedex.db`), initialized in `_layout.tsx`
 - **Theme**: `src/constants/theme.ts` - Colors (#DC0A2D primary), spacing, type colors
 - **Fonts**: Loaded in `src/app/_layout.tsx` - Rubik (Regular, Medium, Bold) from `assets/fonts/`
 - **List Row Component**: `src/components/PokemonRow.tsx` - Reusable Pokemon row (80px fixed height)
