@@ -64,3 +64,8 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- Lessons from building:
+  - The full Pokémon name list is loaded once (`usePokemonList`, key `['pokemon', 'list']`). Search and Compare filter that list with `filterPokemon` in `src/services/filterPokemon.ts`. Never add a request per key press.
+  - Lists with fixed-height rows use `getItemLayout`.
+  - Keep screens simple: no extra UI libraries (for example tabs are plain buttons with local state).
+  - Stat comparison logic lives in `src/services/compare.ts`, not in the screen.
