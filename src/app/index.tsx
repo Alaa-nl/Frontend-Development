@@ -1,11 +1,19 @@
-import { FlatList, StyleSheet, Text, View, ActivityIndicator, Pressable, ListRenderItemInfo } from 'react-native';
+import { FlatList, StyleSheet, Text, View, ActivityIndicator, Pressable, ListRenderItemInfo, TextInput } from 'react-native';
+import { useState, useMemo } from 'react';
 import { usePokemonList } from '../hooks/usePokemonList';
 import { PokemonRow, POKEMON_ROW_HEIGHT } from '../components/PokemonRow';
 import { colors, spacing } from '../constants/theme';
 import { PokemonWithId } from '../services/pokemon';
+import { filterPokemon } from '../services/filterPokemon';
 
 export default function Index() {
   const { data: pokemon, isLoading, error, refetch } = usePokemonList();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredPokemon = useMemo(() => {
+    if (!pokemon) return [];
+    return filterPokemon(pokemon, searchQuery);
+  }, [pokemon, searchQuery]);
 
   if (isLoading) {
     return (
@@ -38,25 +46,79 @@ export default function Index() {
     index,
   });
 
+  const showEmptyState = searchQuery.trim() && filteredPokemon.length === 0;
+
   return (
-    <FlatList
-      data={pokemon}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      getItemLayout={getItemLayout}
-      initialNumToRender={15}
-      maxToRenderPerBatch={10}
-      windowSize={10}
-      removeClippedSubviews={true}
-      style={styles.list}
-    />
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search Pokémon"
+          placeholderTextColor={colors.textLight}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </View>
+      {showEmptyState ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Pokémon found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredPokemon}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          getItemLayout={getItemLayout}
+          initialNumToRender={15}
+          maxToRenderPerBatch={10}
+          windowSize={10}
+          removeClippedSubviews={true}
+          style={styles.list}
+        />
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
+    backgroundColor: colors.background,
+  },
+  searchInput: {
+    height: 48,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 12,
+    paddingHorizontal: spacing.md,
+    fontSize: 16,
+    fontFamily: 'Rubik-Regular',
+    color: colors.text,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   list: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.background,
+    padding: spacing.md,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: colors.textLight,
+    fontFamily: 'Rubik-Regular',
   },
   centerContainer: {
     flex: 1,
