@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet, Text, View, ActivityIndicator, Pressable, ListRenderItemInfo, TextInput } from 'react-native';
 import { useState, useMemo } from 'react';
+import { Link } from 'expo-router';
 import { usePokemonList } from '../hooks/usePokemonList';
 import { PokemonRow, POKEMON_ROW_HEIGHT } from '../components/PokemonRow';
 import { colors, spacing } from '../constants/theme';
@@ -61,6 +62,11 @@ export default function Index() {
           autoCorrect={false}
         />
       </View>
+      <Link href='/favorites' asChild>
+        <Pressable style={styles.favoritesButton}>
+          <Text style={styles.favoritesButtonText}>My favorites</Text>
+        </Pressable>
+      </Link>
       {showEmptyState ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Pokémon found</Text>
@@ -83,6 +89,19 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
+  favoritesButton: {
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.sm,
+    borderRadius: 12,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+  },
+  favoritesButtonText: {
+    color: colors.background,
+    fontFamily: 'Rubik-Medium',
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,

@@ -50,6 +50,7 @@ export default function RootLayout() {
       >
         <Stack.Screen name="index" options={{ title: 'Pokédex' }} />
         <Stack.Screen name="pokemon/[id]" options={{ title: 'Pokémon' }} />
+        <Stack.Screen name="favorites" options={{ title: 'Favorites' }} />
       </Stack>
     </QueryClientProvider>
   );
